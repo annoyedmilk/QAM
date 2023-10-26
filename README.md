@@ -43,6 +43,13 @@ This README provides an overview of the QAM4 and QAM16 modulation code. Quadratu
   - Each character in the message is processed 4 bits at a time.
   - The I and Q components can take values from the set {-3, -1, 1, 3}.
 
+## Example Outputs
+QAM4 Output
+![QAM4](https://github.com/annoyedmilk/QAM/assets/77896841/fbe9447f-1bef-4fb3-a4f0-434d57e44621)
+
+QAM16 Output
+![QAM16](https://github.com/annoyedmilk/QAM/assets/77896841/5638a2eb-b877-4b09-8ad9-1fa96bfd9b12)
+
 ## Dependencies
 
 - Standard C libraries: `stdio.h`, `string.h`, and `math.h`.
