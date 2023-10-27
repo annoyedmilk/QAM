@@ -1,51 +1,82 @@
-#include <stdio.h>    // Für Standard-Ein-/Ausgabefunktionen
-#include <string.h>   // Für String-Manipulationsfunktionen
-#include <math.h>     // Für mathematische Funktionen wie cos() und sin()
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+#include <complex.h>
 
-const char message[] = "Hello World!";  // Die zu modulierende Nachricht
-const float carrierFrequency = 1.0;     // Trägerfrequenz für die Modulation, hier auf 1 Hz gesetzt
+#define MAX_MESSAGE_LENGTH 256
+#define MAX_BINARY_LENGTH (MAX_MESSAGE_LENGTH * 8)
+#define SAMPLES_PER_SYMBOL 20
+
+void text_to_binary(const char* text, char* binary) {
+    for (int i = 0; i < strlen(text); i++) {
+        char byte = text[i];
+        for (int j = 7; j >= 0; j--) {
+            binary[i * 8 + (7 - j)] = (byte & (1 << j)) ? '1' : '0';
+        }
+    }
+    binary[strlen(text) * 8] = '\0';  // Null-terminate the binary string
+}
+
+double complex get_qam16_symbol(const char* symbol) {
+    if (strcmp(symbol, "0000") == 0) return -3 - 3*I;
+    if (strcmp(symbol, "0001") == 0) return -3 - 1*I;
+    if (strcmp(symbol, "0010") == 0) return -3 + 3*I;
+    if (strcmp(symbol, "0011") == 0) return -3 + 1*I;
+    if (strcmp(symbol, "0100") == 0) return -1 - 3*I;
+    if (strcmp(symbol, "0101") == 0) return -1 - 1*I;
+    if (strcmp(symbol, "0110") == 0) return -1 + 3*I;
+    if (strcmp(symbol, "0111") == 0) return -1 + 1*I;
+    if (strcmp(symbol, "1000") == 0) return  3 - 3*I;
+    if (strcmp(symbol, "1001") == 0) return  3 - 1*I;
+    if (strcmp(symbol, "1010") == 0) return  3 + 3*I;
+    if (strcmp(symbol, "1011") == 0) return  3 + 1*I;
+    if (strcmp(symbol, "1100") == 0) return  1 - 3*I;
+    if (strcmp(symbol, "1101") == 0) return  1 - 1*I;
+    if (strcmp(symbol, "1110") == 0) return  1 + 3*I;
+    if (strcmp(symbol, "1111") == 0) return  1 + 1*I;
+    return 0;  // Error case (shouldn't happen)
+}
+
+void qam16_modulate(const char* binary_message, double carrier_frequency, double symbol_duration, int sampling_rate, double* modulated_signal) {
+    double t[SAMPLES_PER_SYMBOL];
+    for (int i = 0; i < SAMPLES_PER_SYMBOL; i++) {
+        t[i] = i * (symbol_duration / sampling_rate);
+    }
+
+    int signal_index = 0;
+    for (int i = 0; i < strlen(binary_message); i += 4) {
+        char symbol[5] = {binary_message[i], binary_message[i+1], binary_message[i+2], binary_message[i+3], '\0'};
+        double complex symbol_value = get_qam16_symbol(symbol);
+        
+        for (int j = 0; j < SAMPLES_PER_SYMBOL; j++) {
+            double carrier_i = cos(2 * M_PI * carrier_frequency * t[j]);
+            double carrier_q = sin(2 * M_PI * carrier_frequency * t[j]);
+            modulated_signal[signal_index] = creal(symbol_value) * carrier_i + cimag(symbol_value) * carrier_q;
+            signal_index++;
+        }
+    }
+}
 
 int main() {
-    // Ein Array deklarieren, um die I- und Q-Komponenten für die 16-QAM-Modulation zu speichern.
-    // Die Größe des Arrays ist halb so groß wie bei 4-QAM, da wir jetzt 4 Bits pro Symbol verwenden.
-    int QAM_sequence[2 * strlen(message) * 8 / 2];
+    char message[MAX_MESSAGE_LENGTH];
+    printf("Enter the message you'd like to modulate: ");
+    fgets(message, sizeof(message), stdin);
+    message[strcspn(message, "\n")] = 0;  // Remove trailing newline
 
-    int index = 0;  // Index, um die Position im QAM_sequence-Array zu verfolgen
+    char binary_message[MAX_BINARY_LENGTH];
+    text_to_binary(message, binary_message);
 
-    // Die Nachricht in eine 16-QAM-Sequenz umwandeln
-    for (int i = 0; i < strlen(message); i++) {  // Über jedes Zeichen in der Nachricht iterieren
-        for (int j = 6; j >= 0; j -= 4) {       // Über jedes 4-Bit-Gruppe im Zeichen iterieren
-            int bit1 = (message[i] >> j) & 1;   // Das erste Bit der Gruppe extrahieren
-            int bit2 = (message[i] >> (j - 1)) & 1;  // Das zweite Bit der Gruppe extrahieren
-            int bit3 = (message[i] >> (j - 2)) & 1;  // Das dritte Bit der Gruppe extrahieren
-            int bit4 = (message[i] >> (j - 3)) & 1;  // Das vierte Bit der Gruppe extrahieren
+    double carrier_frequency = 1.0;
+    double symbol_duration = 1.0;
+    int sampling_rate = SAMPLES_PER_SYMBOL;
 
-            // Die 4 Bits in 16-QAM-Symbole umwandeln
-            int I = (bit1 << 1 | bit2);
-            int Q = (bit3 << 1 | bit4);
+    double modulated_signal[strlen(binary_message) / 4 * SAMPLES_PER_SYMBOL];
+    qam16_modulate(binary_message, carrier_frequency, symbol_duration, sampling_rate, modulated_signal);
 
-            // Convert to QAM16 constellation points
-            QAM_sequence[index++] = (I == 0) ? 3 : (I == 1) ? 1 : (I == 2) ? -3 : -1;  // I-Komponente
-            QAM_sequence[index++] = (Q == 0) ? 3 : (Q == 1) ? 1 : (Q == 2) ? -3 : -1;  // Q-Komponente
-        }
+    for (int i = 0; i < strlen(binary_message) / 4 * SAMPLES_PER_SYMBOL; i++) {
+        printf("%f\n", modulated_signal[i]);
     }
+    printf("\n");
 
-    // Die modulierten Werte generieren und ausgeben
-    for (int m = 0; m < 2 * strlen(message) * 8 / 2; m += 2) {  // Über jedes I/Q-Paar in der QAM_sequence iterieren
-        for (float t = 0; t < 2 * M_PI; t += 0.1) {  // Einen Zyklus der Trägerwelle generieren
-            // Die I- und Q-Komponenten auf die Trägerwelle modulieren:
-            // Die I-Komponente wird auf eine Kosinuswelle moduliert
-            // Die Q-Komponente wird auf eine Sinuswelle moduliert
-            float S_i = QAM_sequence[m] * cos(carrierFrequency * t);
-            float S_q = QAM_sequence[m + 1] * sin(carrierFrequency * t);
-
-            // Die modulierten I- und Q-Komponenten kombinieren, um das endgültige modulierte Signal zu erzeugen
-            float S = S_i + S_q;
-
-            // Den modulierten Wert auf der Konsole ausgeben
-            printf("%f\n", S);
-        }
-    }
-
-    return 0;  // Das Programm beenden
+    return 0;
 }
