@@ -1,59 +1,80 @@
-# QAM4 and QAM16 Modulation README
+# QAM4 and QAM16 Modulation
 
 ## Introduction
 
-This README provides an overview of the QAM4 and QAM16 modulation code. Quadrature Amplitude Modulation (QAM) is a modulation scheme that conveys data by changing the amplitude of two carrier waves. These carrier waves, usually sinusoids, are out of phase with each other by 90°.
+Welcome to the QAM4 and QAM16 modulation repository, providing implementations in both C and Python. Quadrature Amplitude Modulation (QAM) conveys data by changing the amplitude of two carrier waves, typically sinusoids, which are out of phase by 90°.
 
-## Files
+## 📁 Files
 
-1. `QAM4.c`: This file contains the code for QAM4 modulation.
-2. `QAM16.c`: This file contains the code for QAM16 modulation.
+### C Implementations:
 
-## Features
+- `QAM4.c`: QAM4 modulation.
+- `QAM16.c`: QAM16 modulation.
 
-- **Message Encoding**: The code takes a string message and encodes it into a sequence of I (In-phase) and Q (Quadrature) components based on the QAM scheme.
-  
-- **Carrier Wave Modulation**: The I and Q components are then modulated onto a carrier wave, generating the final modulated signal.
+### Python Implementations:
 
-- **Console Output**: The modulated values are printed to the console for visualization or further processing.
+- `QAM4.py`: QAM4 modulation with visualization.
+- `QAM16.py`: QAM16 modulation with visualization.
 
-## Usage
+## 🌟 Features
 
-1. **Compilation**:
+- **Message Encoding**: Convert string messages into I (In-phase) and Q (Quadrature) components.
+- **Carrier Wave Modulation**: Modulate the I and Q components onto a carrier wave.
+- **Error Simulation (Python only)**: Simulate bit errors during transmission.
+- **Visualization (Python only)**: Visualize modulation, symbol errors, and waveforms.
+- **Console Output**: View modulated values directly in the console.
+
+## 🚀 Usage
+
+### C Implementations:
+
+1. Compilation:
    ```bash
    gcc QAM4.c -o QAM4 -lm
    gcc QAM16.c -o QAM16 -lm
    ```
 
-2. **Execution**:
+2. Execution:
    ```bash
    ./QAM4
    ./QAM16
    ```
 
-3. The modulated values will be printed to the console.
+### Python Implementations:
 
-## Modulation Details
+1. Execution:
+   ```bash
+   python QAM4.py
+   python QAM16.py
+   ```
+
+## 🔍 Modulation Details
 
 - **QAM4**:
-  - Each character in the message is processed 2 bits at a time.
-  - The I and Q components can take values from the set {-1, 1}.
+  - Process each character 2 bits at a time.
+  - I and Q values: {-1, 1}
 
 - **QAM16**:
-  - Each character in the message is processed 4 bits at a time.
-  - The I and Q components can take values from the set {-3, -1, 1, 3}.
+  - Process each character 4 bits at a time.
+  - I and Q values: {-3, -1, 1, 3}
 
-## Example Outputs
-QAM4 Output
-![QAM4](https://github.com/annoyedmilk/QAM/assets/77896841/fbe9447f-1bef-4fb3-a4f0-434d57e44621)
+## 🖼️ Example Outputs
 
-QAM16 Output
-![QAM16](https://github.com/annoyedmilk/QAM/assets/77896841/5638a2eb-b877-4b09-8ad9-1fa96bfd9b12)
+![QAM4 Output](https://github.com/annoyedmilk/QAM/assets/77896841/65fc6267-e699-4edb-81a9-4b8910af567d)
 
-## Dependencies
+![QAM16 Output](https://github.com/annoyedmilk/QAM/assets/77896841/319a5157-9773-4e99-ba4b-3f86813eaeb1)
 
-- Standard C libraries: `stdio.h`, `string.h`, and `math.h`.
+## 📚 Dependencies
 
-## Conclusion
+### C: 
+- `stdio.h`
+- `string.h`
+- `math.h`
 
-This code provides a simple implementation of QAM4 and QAM16 modulation schemes. It's useful for understanding the basics of QAM and can be expanded or integrated into larger communication system simulations or projects.
+### Python:
+- `numpy`
+- `matplotlib`
+
+## 📜 Conclusion
+
+This repository offers a clear and comprehensive implementation of QAM4 and QAM16 modulation schemes in both C and Python. It serves as a foundation for those looking to delve into the world of QAM or for those looking to integrate these implementations into larger projects.
