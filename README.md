@@ -20,9 +20,8 @@ Welcome to the QAM4 and QAM16 modulation repository, providing implementations i
 
 - **Message Encoding**: Convert string messages into I (In-phase) and Q (Quadrature) components.
 - **Carrier Wave Modulation**: Modulate the I and Q components onto a carrier wave.
-- **Error Simulation (Python only)**: Simulate bit errors during transmission.
 - **Visualization (Python only)**: Visualize modulation, symbol errors, and waveforms.
-- **Console Output**: View modulated values directly in the console.
+- **Console Output(C only)**: View modulated values directly in the console.
 
 ## 🚀 Usage
 
