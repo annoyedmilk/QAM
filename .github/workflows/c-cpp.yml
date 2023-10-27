@@ -31,7 +31,7 @@ jobs:
     - name: Compile QAM16.c
       run: gcc QAM16.c -o qam16 -lm
 
-     - name: Run QAM4
+    - name: Run QAM4
       run: echo "Hello World!" | ./qam4
     
     - name: Run QAM16
