@@ -23,8 +23,20 @@ jobs:
     - name: Compile QAM16.c
       run: gcc QAM16.c -o qam16 -lm
 
+    - name: Compile modulator.c
+      run: gcc modulator.c -o modulator -lm
+
+    - name: Compile demodulator.c
+      run: gcc demodulator.c -o demodulator -lm
+
     - name: Run QAM4
       run: ./qam4
 
     - name: Run QAM16
       run: ./qam16
+
+    - name: Run modulator
+      run: ./modulator
+      
+    - name: Run demodulator
+      run: ./demodulator
