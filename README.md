@@ -60,9 +60,9 @@ Welcome to the QAM4 and QAM16 modulation repository, providing implementations i
 
 ## 🖼️ Example Outputs
 
-![QAM4 Output](https://github.com/annoyedmilk/QAM/assets/77896841/65fc6267-e699-4edb-81a9-4b8910af567d)
+![QAM4 Output](https://github.com/annoyedmilk/QAM/assets/77896841/341eb6e2-e702-468f-9d83-06cff69f03ac)
 
-![QAM16 Output](https://github.com/annoyedmilk/QAM/assets/77896841/319a5157-9773-4e99-ba4b-3f86813eaeb1)
+![QAM16 Output](https://github.com/annoyedmilk/QAM/assets/77896841/6c432ae8-b27c-449b-b4d3-1136145cbc10)
 
 ## 📚 Dependencies
 
