@@ -31,13 +31,14 @@ jobs:
     - name: Compile QAM16.c
       run: gcc QAM16.c -o qam16 -lm
 
-    - name: Run QAM4
-      run: ./qam4
-
+     - name: Run QAM4
+      run: echo "Hello World!" | ./qam4
+    
     - name: Run QAM16
-      run: ./qam16
+      run: echo "Hello World!" | ./qam16
 
-    - name: Run Python QAM Scripts
-      run: |
-        python QAM4.py
-        python QAM16.py
+    - name: Run Python QAM4 Script
+      run: echo "Hello World!" | python QAM4.py
+    
+    - name: Run Python QAM16 Script
+      run: echo "Hello World!" | python QAM16.py
